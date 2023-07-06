@@ -21,6 +21,6 @@ func (h *HealthzHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	healthzHandler.Message = "OK"
 	// println(healthzHandler.Message)
 
-	json.NewEncoder(w).Encode(healthzHandler.Message)
+	json.NewEncoder(w).Encode(healthzHandler)
 	return
 }
