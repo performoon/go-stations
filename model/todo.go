@@ -9,7 +9,7 @@ type (
 		Subject     string    `json:"subject"`
 		Description string    `json:"description"`
 		CreatedAt   time.Time `json:"created_at"`
-		UpdatedAt   time.Time `json:"updateed_at"`
+		UpdatedAt   time.Time `json:"updated_at"`
 	}
 
 	// A CreateTODORequest expresses ...
