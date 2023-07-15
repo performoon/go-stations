@@ -36,13 +36,13 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 		return nil, err
 	}
 
-	todo := new(model.TODO)
+	// todo := new(model.TODO)
 	insertID, err := result.LastInsertId()
 
 	stmt.QueryRowContext(ctx, insertID).Scan(&todo)
 	// s.db.QueryRowContext(ctx, confirm)
 
-	return todo, nil
+	return nil, nil
 }
 
 // ReadTODO reads TODOs on DB.
