@@ -42,12 +42,12 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 
 	fmt.Println(todo)
 
-	stmt.QueryRowContext(ctx, insertID).Scan(&todo.ID, &todo.Subject, &todo.Description)
+	stmt.QueryRowContext(ctx, insertID).Scan(todo.ID, todo.Subject, todo.Description, todo.CreatedAt, todo.UpdatedAt)
 	// s.db.QueryRowContext(ctx, confirm)
 
 	fmt.Println(todo)
 
-	return &todo, nil
+	return todo, nil
 }
 
 // ReadTODO reads TODOs on DB.
