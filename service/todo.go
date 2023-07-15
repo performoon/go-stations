@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/TechBowl-japan/go-stations/model"
 )
@@ -39,10 +40,14 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	todo := new(model.TODO)
 	insertID, err := result.LastInsertId()
 
+	fmt.Println(todo)
+
 	stmt.QueryRowContext(ctx, insertID).Scan(&todo.ID, &todo.Subject, &todo.Description)
 	// s.db.QueryRowContext(ctx, confirm)
 
-	return todo, nil
+	fmt.Println(todo)
+
+	return &todo, nil
 }
 
 // ReadTODO reads TODOs on DB.
