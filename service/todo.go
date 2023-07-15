@@ -30,7 +30,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	if err != nil {
 		return nil, err
 	}
-	_, err = stmt.ExecContext(ctx, subject, description)
+	stmt.ExecContext(ctx, subject, description)
 	// _, err = stmt.ExecContext(ctx, subject, description)
 	if err != nil {
 		return nil, err
