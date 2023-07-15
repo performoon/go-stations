@@ -27,25 +27,66 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 		insert  = `INSERT INTO todos(subject, description) VALUES(?, ?)`
 		confirm = `SELECT subject, description, created_at, updated_at FROM todos WHERE id = ?`
 	)
+
 	stmt, err := s.db.PrepareContext(ctx, insert)
 	if err != nil {
+		fmt.Println("PrepareContext err")
 		return nil, err
 	}
+	//defer stmt.Close()
+
 	result, err := stmt.ExecContext(ctx, subject, description)
-	// _, err = stmt.ExecContext(ctx, subject, description)
+	//_, err = stmt.ExecContext(ctx, subject, description)
 	if err != nil {
+		fmt.Print("ExecContext err : ")
+		fmt.Println(err)
 		return nil, err
 	}
+	insertID, err := result.LastInsertId()
+	fmt.Print("insert insertID : ")
+	fmt.Println(insertID)
+
+	stmt, err = s.db.PrepareContext(ctx, confirm)
+	if err != nil {
+		fmt.Println("PrepareContext err")
+		return nil, err
+	}
+	//defer stmt.Close()
+	fmt.Print("select PrepareContext : ")
+	fmt.Println(stmt)
+
+	stmt.ExecContext(ctx, insertID)
+	//_, err = stmt.ExecContext(ctx, subject, description)
+	if err != nil {
+		fmt.Print("ExecContext err : ")
+		fmt.Println(err)
+		return nil, err
+	}
+	fmt.Print("select ExecContext : ")
+	fmt.Println(result)
 
 	todo := new(model.TODO)
-	insertID, err := result.LastInsertId()
 
+	fmt.Print("insert insertID : ")
+	fmt.Println(insertID)
+
+	//fmt.Println(todo)
+
+	row := stmt.QueryRowContext(ctx, insertID)
+
+	err = row.Scan(&todo.Subject, &todo.Description, &todo.CreatedAt, &todo.UpdatedAt)
+	if err != nil {
+		fmt.Print("row err : ")
+		fmt.Println(err)
+	}
+
+	fmt.Print("todo : ")
 	fmt.Println(todo)
+	// row.Scan(todo)
 
-	stmt.QueryRowContext(ctx, insertID).Scan(todo.ID, todo.Subject, todo.Description, todo.CreatedAt, todo.UpdatedAt)
 	// s.db.QueryRowContext(ctx, confirm)
 
-	fmt.Println(todo)
+	//fmt.Println(todo)
 
 	return todo, nil
 }
