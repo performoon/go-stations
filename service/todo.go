@@ -42,7 +42,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	stmt.QueryRowContext(ctx, insertID).Scan(&todo)
 	// s.db.QueryRowContext(ctx, confirm)
 
-	return nil, nil
+	return todo, nil
 }
 
 // ReadTODO reads TODOs on DB.
