@@ -30,7 +30,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	if err != nil {
 		return nil, err
 	}
-	stmt.ExecContext(ctx, subject, description)
+	result, err := stmt.ExecContext(ctx, subject, description)
 	// _, err = stmt.ExecContext(ctx, subject, description)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 
 	todo := new(model.TODO)
 
-	stmt.QueryRowContext(ctx, confirm).Scan(todo)
+	stmt.QueryRowContext(ctx, result).Scan(&todo)
 	// s.db.QueryRowContext(ctx, confirm)
 
 	return todo, nil
