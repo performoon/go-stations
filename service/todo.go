@@ -39,7 +39,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	todo := new(model.TODO)
 	insertID, err := result.LastInsertId()
 
-	stmt.QueryRowContext(ctx, insertID).Scan(&todo)
+	stmt.QueryRowContext(ctx, insertID).Scan(&todo.ID, &todo.Subject, &todo.Description)
 	// s.db.QueryRowContext(ctx, confirm)
 
 	return todo, nil
