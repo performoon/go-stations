@@ -61,10 +61,9 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			//createTODOResponse.TODO.Subject = h.
 			createTODOResponse.TODO = *todo
+			json.NewEncoder(w).Encode(createTODOResponse)
 		}
 	}
-
-	healthzHandler.Message = "OK"
 	// println(healthzHandler.Message)
 
 	json.NewEncoder(w).Encode(healthzHandler)
