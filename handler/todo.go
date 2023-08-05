@@ -52,6 +52,8 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var createTODOResponse = &model.CreateTODOResponse{}
 	if r.Method == "Post" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusBadRequest)
 		if createTODORequest.Subject == "" {
 			w.Header().Set("Content-Type", "text/plain")
 			w.WriteHeader(http.StatusBadRequest)
