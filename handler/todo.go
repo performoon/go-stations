@@ -72,7 +72,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			//createTODOResponse.TODO.Subject = h.
 			createTODOResponse.TODO = *todo
-			json.NewEncoder(w).Encode(createTODOResponse)
+			json.NewEncoder(w).Encode(createTODOResponse.TODO)
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
 			if err != nil {
