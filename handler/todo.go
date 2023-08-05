@@ -50,12 +50,16 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var healthzHandler = &model.HealthzResponse{}
 	var createTODORequest = &model.CreateTODORequest{}
 	var createTODOResponse = &model.CreateTODOResponse{}
-	if r.Method == "Post" {
+	if r.Method == "POST" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
+		fmt.Println("Method=POST")
 		if createTODORequest.Subject == "" {
-			w.Header().Set("Content-Type", "text/plain")
+			// w.Header().Set("Content-Type", "text/plain")
+			// w.WriteHeader(http.StatusBadRequest)
+			// http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
+			w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
 			w.WriteHeader(http.StatusBadRequest)
-			http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
 			return
 			// w.Write()
 		} else {
