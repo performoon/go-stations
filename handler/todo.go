@@ -53,7 +53,9 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "Post" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
 		if createTODORequest.Subject == "" {
-
+			w.Header().Set("Content-Type", "text/plain")
+			w.WriteHeader(http.StatusBadRequest)
+			// w.Write()
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
 			if err != nil {
