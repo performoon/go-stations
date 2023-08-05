@@ -50,7 +50,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var healthzHandler = &model.HealthzResponse{}
 	var createTODORequest = &model.CreateTODORequest{}
 	var createTODOResponse = &model.CreateTODOResponse{}
-	if r.Method == "Post" {
+	if r.Method == "POST" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
 		fmt.Println("Method=POST")
 		if createTODORequest.Subject == "" {
@@ -62,6 +62,14 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
 			return
 			// w.Write()
+		} else if createTODORequest.Description == "" {
+			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, "")
+			if err != nil {
+				fmt.Println("CreateTODO Description is empty")
+			}
+			//createTODOResponse.TODO.Subject = h.
+			createTODOResponse.TODO = *todo
+			json.NewEncoder(w).Encode(createTODOResponse)
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
 			if err != nil {
