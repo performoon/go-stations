@@ -65,7 +65,10 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		} else if createTODORequest.Description == "" {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, "")
 			if err != nil {
-				fmt.Println("CreateTODO Description is empty")
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
+				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
+				return
 			}
 			//createTODOResponse.TODO.Subject = h.
 			createTODOResponse.TODO = *todo
