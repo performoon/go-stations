@@ -52,11 +52,10 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var createTODOResponse = &model.CreateTODOResponse{}
 	if r.Method == "Post" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
-		w.Header().Set("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusBadRequest)
 		if createTODORequest.Subject == "" {
 			w.Header().Set("Content-Type", "text/plain")
 			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
 			// w.Write()
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
