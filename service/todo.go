@@ -82,6 +82,8 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	fmt.Print("insertID type : ")
 	fmt.Println(reflect.TypeOf(insertID))
 
+	todo.ID = int(insertID)
+
 	//fmt.Println(todo)
 
 	row := stmt.QueryRowContext(ctx, insertID)
