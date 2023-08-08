@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/TechBowl-japan/go-stations/model"
@@ -50,10 +49,10 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var healthzHandler = &model.HealthzResponse{}
 	var createTODORequest = &model.CreateTODORequest{}
 	var createTODOResponse = &model.CreateTODOResponse{}
-	fmt.Println("start")
+	//fmt.Println("start")
 	if r.Method == "POST" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
-		fmt.Println("Method=POST")
+		//fmt.Println("Method=POST")
 		if createTODORequest.Subject == "" {
 			w.Header().Set("Content-Type", "text/plain")
 			w.WriteHeader(http.StatusBadRequest)
@@ -72,8 +71,8 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				//return
 			}
 			//createTODOResponse.TODO.Subject = h.
-			fmt.Print("todo:")
-			fmt.Print(todo)
+			//fmt.Print("todo:")
+			//fmt.Print(todo)
 			createTODOResponse.TODO = *todo
 			json.NewEncoder(w).Encode(createTODOResponse)
 		} else {
