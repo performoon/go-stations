@@ -5,7 +5,7 @@ import "time"
 type (
 	// A TODO expresses ...
 	TODO struct {
-		ID          float64   `json:"id"`
+		ID          int       `json:"id"`
 		Subject     string    `json:"subject"`
 		Description string    `json:"description"`
 		CreatedAt   time.Time `json:"created_at"`
