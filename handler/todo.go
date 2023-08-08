@@ -54,21 +54,21 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
 		fmt.Println("Method=POST")
 		if createTODORequest.Subject == "" {
-			// w.Header().Set("Content-Type", "text/plain")
-			// w.WriteHeader(http.StatusBadRequest)
-			// http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
-			// w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
-			// w.WriteHeader(http.StatusBadRequest)
-			// json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
+			w.Header().Set("Content-Type", "text/plain")
+			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
+			w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
 			return
 			// w.Write()
 		} else if createTODORequest.Description == "" {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, "")
 			if err != nil {
-				// w.Header().Set("Content-Type", "application/json")
-				// w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
-				// json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
-				return
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
+				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
+				//return
 			}
 			//createTODOResponse.TODO.Subject = h.
 			fmt.Print("todo:")
@@ -78,10 +78,10 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
 			if err != nil {
-				// w.Header().Set("Content-Type", "application/json")
-				// w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
-				// json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
-				return
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
+				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
+				//return
 			}
 			//createTODOResponse.TODO.Subject = h.
 			createTODOResponse.TODO = *todo
