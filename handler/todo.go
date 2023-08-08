@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/TechBowl-japan/go-stations/model"
@@ -66,8 +67,11 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, "")
 			if err != nil {
 				w.Header().Set("Content-Type", "application/json")
+				fmt.Print("a")
 				w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
+				fmt.Print("b")
 				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
+				fmt.Print("c")
 				//return
 			}
 			//createTODOResponse.TODO.Subject = h.
