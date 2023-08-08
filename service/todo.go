@@ -50,6 +50,12 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	fmt.Print("insertID type : ")
 	fmt.Println(reflect.TypeOf(insertID))
 
+	_, err = stmt.Exec("UPDATE todos SET ID = ? WHERE ID = ?", insertID, insertID)
+	if err != nil {
+		fmt.Print("ExecID : ")
+		fmt.Println(err)
+	}
+
 	stmt, err = s.db.PrepareContext(ctx, confirm)
 	if err != nil {
 		fmt.Println("PrepareContext err")
