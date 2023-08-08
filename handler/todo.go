@@ -71,6 +71,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			//createTODOResponse.TODO.Subject = h.
+			fmt.Print("todo:")
 			fmt.Print(todo)
 			createTODOResponse.TODO = *todo
 			json.NewEncoder(w).Encode(createTODOResponse)
