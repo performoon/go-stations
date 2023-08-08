@@ -84,6 +84,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("d")
 			json.NewEncoder(w).Encode(createTODOResponse)
 			fmt.Println("e")
+			return
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
 			if err != nil {
