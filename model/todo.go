@@ -35,11 +35,7 @@ type (
 	}
 	// A UpdateTODOResponse expresses ...
 	UpdateTODOResponse struct {
-		ID          int       `json:"id"`
-		Subject     string    `json:"subject"`
-		Description string    `json:"description"`
-		CreatedAt   time.Time `json:"created_at"`
-		UpdatedAt   time.Time `json:"updated_at"`
+		TODO TODO `json:"todo"`
 	}
 
 	// A DeleteTODORequest expresses ...
