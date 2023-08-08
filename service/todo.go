@@ -73,6 +73,8 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 
 	fmt.Print("insert insertID : ")
 	fmt.Println(insertID)
+	fmt.Print("insertID type : ")
+	fmt.Println(reflect.TypeOf(insertID))
 
 	//fmt.Println(todo)
 
