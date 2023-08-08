@@ -116,8 +116,9 @@ func TestStation9(t *testing.T) {
 			diff := cmp.Diff(got, want, cmpopts.IgnoreMapEntries(func(k string, v interface{}) bool {
 				switch k {
 				case "id":
-					if vv, _ := v.(int64); vv == 0 {
-						t.Errorf("id をintに変換できません, got = %s", k)
+					if vv, _ := v.(float64); vv == 0 {
+						fmt.Println(v)
+						t.Errorf("id を数値に変換できません, got = %s", k)
 					}
 					return true
 				case "created_at", "updated_at":
