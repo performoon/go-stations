@@ -84,10 +84,11 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			//createTODOResponse.TODO.Subject = h.
 			createTODOResponse.TODO = *todo
 			json.NewEncoder(w).Encode(createTODOResponse)
+			return
 		}
 	}
 	// println(healthzHandler.Message)
 
-	//json.NewEncoder(w).Encode(healthzHandler)
+	json.NewEncoder(w).Encode(healthzHandler)
 	return
 }
