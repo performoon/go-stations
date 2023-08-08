@@ -117,7 +117,7 @@ func TestStation9(t *testing.T) {
 				switch k {
 				case "id":
 					if vv, _ := v.(float64); vv == 0 {
-						fmt.Println(v)
+						fmt.Println(v.(float64))
 						t.Errorf("id を数値に変換できません, got = %s", k)
 					}
 					return true
