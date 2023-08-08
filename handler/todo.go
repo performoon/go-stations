@@ -47,7 +47,7 @@ func (h *TODOHandler) Delete(ctx context.Context, req *model.DeleteTODORequest) 
 }
 
 func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var healthzHandler = &model.HealthzResponse{}
+	//var healthzHandler = &model.HealthzResponse{}
 	var createTODORequest = &model.CreateTODORequest{}
 	var createTODOResponse = &model.CreateTODOResponse{}
 	if r.Method == "POST" {
