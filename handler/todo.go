@@ -75,15 +75,15 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("b")
 				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
 				fmt.Println("c")
-				//return
+				return
 			}
 			//createTODOResponse.TODO.Subject = h.
 			//fmt.Print("todo:")
 			//fmt.Print(todo)
 			createTODOResponse.TODO = *todo
-			fmt.Print("d")
+			fmt.Println("d")
 			json.NewEncoder(w).Encode(createTODOResponse)
-			fmt.Print("e")
+			fmt.Println("e")
 		} else {
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, createTODORequest.Description)
 			if err != nil {
@@ -99,7 +99,9 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// println(healthzHandler.Message)
-
+	fmt.Println("f")
 	json.NewEncoder(w).Encode(healthzHandler)
+	fmt.Println("g")
 	return
+
 }
