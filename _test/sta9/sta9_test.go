@@ -117,7 +117,7 @@ func TestStation9(t *testing.T) {
 				switch k {
 				case "id":
 					if vv, _ := v.(int64); vv == 0 {
-						t.Errorf("id を数値に変換できません, got = %s", k)
+						t.Errorf("id をintに変換できません, got = %s", k)
 					}
 					return true
 				case "created_at", "updated_at":
