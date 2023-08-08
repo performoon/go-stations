@@ -78,9 +78,8 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("c")
 				return
 			}
-			//createTODOResponse.TODO.Subject = h.
 			fmt.Print("todo:")
-			fmt.Print(todo)
+			fmt.Print(todo.ID)
 			fmt.Print("insertID type : ")
 			fmt.Println(reflect.TypeOf(todo.ID))
 			createTODOResponse.TODO = *todo
