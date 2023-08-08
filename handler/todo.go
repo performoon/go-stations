@@ -50,6 +50,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var healthzHandler = &model.HealthzResponse{}
 	var createTODORequest = &model.CreateTODORequest{}
 	var createTODOResponse = &model.CreateTODOResponse{}
+	fmt.Println("start")
 	if r.Method == "POST" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
 		fmt.Println("Method=POST")
