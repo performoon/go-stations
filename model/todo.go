@@ -28,9 +28,19 @@ type (
 	ReadTODOResponse struct{}
 
 	// A UpdateTODORequest expresses ...
-	UpdateTODORequest struct{}
+	UpdateTODORequest struct {
+		ID          int    `json:"id"`
+		Subject     string `json:"subject"`
+		Description string `json:"description"`
+	}
 	// A UpdateTODOResponse expresses ...
-	UpdateTODOResponse struct{}
+	UpdateTODOResponse struct {
+		ID          int       `json:"id"`
+		Subject     string    `json:"subject"`
+		Description string    `json:"description"`
+		CreatedAt   time.Time `json:"created_at"`
+		UpdatedAt   time.Time `json:"updated_at"`
+	}
 
 	// A DeleteTODORequest expresses ...
 	DeleteTODORequest struct{}
