@@ -64,17 +64,17 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 			// w.Write()
 		} else if createTODORequest.Description == "" {
-			fmt.Print("0")
+			fmt.Println("0")
 			todo, err := h.svc.CreateTODO(r.Context(), createTODORequest.Subject, "")
-			fmt.Print("1")
+			fmt.Println("1")
 			if err != nil {
-				fmt.Print("2")
+				fmt.Println("2")
 				w.Header().Set("Content-Type", "application/json")
-				fmt.Print("a")
+				fmt.Println("a")
 				w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
-				fmt.Print("b")
+				fmt.Println("b")
 				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
-				fmt.Print("c")
+				fmt.Println("c")
 				//return
 			}
 			//createTODOResponse.TODO.Subject = h.
