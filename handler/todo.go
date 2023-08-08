@@ -47,15 +47,15 @@ func (h *TODOHandler) Delete(ctx context.Context, req *model.DeleteTODORequest) 
 }
 
 func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	//var healthzHandler = &model.HealthzResponse{}
+	var healthzHandler = &model.HealthzResponse{}
 	var createTODORequest = &model.CreateTODORequest{}
 	var createTODOResponse = &model.CreateTODOResponse{}
 	if r.Method == "POST" {
 		json.NewDecoder(r.Body).Decode(createTODORequest)
 		fmt.Println("Method=POST")
 		if createTODORequest.Subject == "" {
-			w.Header().Set("Content-Type", "text/plain")
-			w.WriteHeader(http.StatusBadRequest)
+			// w.Header().Set("Content-Type", "text/plain")
+			// w.WriteHeader(http.StatusBadRequest)
 			// http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
 			// w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
 			// w.WriteHeader(http.StatusBadRequest)
@@ -91,6 +91,6 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	// println(healthzHandler.Message)
 
-	//json.NewEncoder(w).Encode(healthzHandler)
+	json.NewEncoder(w).Encode(healthzHandler)
 	return
 }
