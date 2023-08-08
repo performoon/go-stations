@@ -93,7 +93,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	// s.db.QueryRowContext(ctx, confirm)
 
 	//fmt.Println(todo)
-
+	fmt.Println("finish")
 	return todo, nil
 }
 
