@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/TechBowl-japan/go-stations/model"
 	"github.com/TechBowl-japan/go-stations/service"
@@ -78,8 +79,10 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			//createTODOResponse.TODO.Subject = h.
-			//fmt.Print("todo:")
-			//fmt.Print(todo)
+			fmt.Print("todo:")
+			fmt.Print(todo)
+			fmt.Print("insertID type : ")
+			fmt.Println(reflect.TypeOf(todo.ID))
 			createTODOResponse.TODO = *todo
 			fmt.Println("d")
 			json.NewEncoder(w).Encode(createTODOResponse)
