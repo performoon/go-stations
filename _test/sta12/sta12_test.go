@@ -110,7 +110,7 @@ func TestStation12(t *testing.T) {
 			}
 
 			want := &model.TODO{
-				ID:          now(tc.ID),
+				ID:          tc.ID,
 				Subject:     tc.Subject,
 				Description: tc.Description,
 				CreatedAt:   time.Now(),
