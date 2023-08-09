@@ -48,17 +48,17 @@ func (h *TODOHandler) Delete(ctx context.Context, req *model.DeleteTODORequest) 
 }
 
 func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var healthzHandler = &model.HealthzResponse{}
-	var createTODORequest = &model.CreateTODORequest{}
-	var createTODOResponse = &model.CreateTODOResponse{}
+
 	//fmt.Println("start")
 	if r.Method == "POST" {
+		var createTODORequest = &model.CreateTODORequest{}
+		var createTODOResponse = &model.CreateTODOResponse{}
 		json.NewDecoder(r.Body).Decode(createTODORequest)
 		//fmt.Println("Method=POST")
 		if createTODORequest.Subject == "" {
-			w.Header().Set("Content-Type", "text/plain")
-			w.WriteHeader(http.StatusBadRequest)
-			http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
+			// w.Header().Set("Content-Type", "text/plain")
+			// w.WriteHeader(http.StatusBadRequest)
+			// http.Error(w, "Bad Request: Invalid input", http.StatusBadRequest)
 			w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
@@ -100,11 +100,30 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(createTODOResponse)
 			return
 		}
+	} else if r.Method == "PUT" {
+		var updateTODORequest = &model.UpdateTODORequest{}
+		var updateTODOResponse = &model.UpdateTODOResponse{}
+		json.NewDecoder(r.Body).Decode(updateTODORequest)
+		//fmt.Println("Method=POST")
+		if updateTODORequest.ID == 0 || updateTODORequest.Subject == "" {
+			w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
+		} else {
+			todo, err := h.svc.UpdateTODO(r.Context(), updateTODORequest.ID, updateTODORequest.Subject, updateTODORequest.Description)
+			if err != nil {
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusInternalServerError) // サーバーエラーの場合のステータスコードを設定
+				json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
+				//return
+			}
+			//createTODOResponse.TODO.Subject = h.
+			updateTODOResponse.TODO = *todo
+			json.NewEncoder(w).Encode(updateTODOResponse)
+			return
+		}
 	}
-	// println(healthzHandler.Message)
-	fmt.Println("f")
-	json.NewEncoder(w).Encode(healthzHandler)
-	fmt.Println("g")
+	fmt.Println("どこも通ってない！？")
 	return
 
 }
