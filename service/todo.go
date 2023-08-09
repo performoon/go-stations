@@ -148,11 +148,11 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 	fmt.Print("insertID type : ")
 	fmt.Println(reflect.TypeOf(insertID))
 
-	_, err = stmt.Exec("UPDATE todos SET id = ?", insertID)
-	if err != nil {
-		fmt.Print("ExecID err: ")
-		fmt.Println(err)
-	}
+	// _, err = stmt.Exec("UPDATE todos SET id = ?", insertID)
+	// if err != nil {
+	// 	fmt.Print("ExecID err: ")
+	// 	fmt.Println(err)
+	// }
 
 	stmt, err = s.db.PrepareContext(ctx, confirm)
 	if err != nil {
