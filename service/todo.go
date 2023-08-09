@@ -168,9 +168,12 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 			fmt.Println(err)
 		}
 		todos = append(todos, addTodo)
-		fmt.Print(todos[1])
+		fmt.Print(todos[0])
 	}
-	fmt.Print(todos)
+	for i, printTodo := range todos {
+		fmt.Print("todo : ")
+		fmt.Printf("%d: %s\n", i, printTodo)
+	}
 
 	return todos, nil
 }
