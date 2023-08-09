@@ -45,10 +45,10 @@ type (
 
 	// A DeleteTODORequest expresses ...
 	DeleteTODORequest struct {
-		IDs []int64 `json:"id"`
+		IDs []int64 `json:"ids"`
 	}
 	// A DeleteTODOResponse expresses ...
 	DeleteTODOResponse struct {
-		IDs []int64 `json:"id"`
+		IDs []int64 `json:"ids"`
 	}
 )
