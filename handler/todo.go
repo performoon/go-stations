@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strconv"
 
 	"github.com/TechBowl-japan/go-stations/model"
 	"github.com/TechBowl-japan/go-stations/service"
@@ -50,7 +51,8 @@ func (h *TODOHandler) Delete(ctx context.Context, req *model.DeleteTODORequest) 
 func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//fmt.Println("start")
-	if r.Method == "POST" {
+	switch r.Method {
+	case "POST":
 		var createTODORequest = &model.CreateTODORequest{}
 		var createTODOResponse = &model.CreateTODOResponse{}
 		json.NewDecoder(r.Body).Decode(createTODORequest)
@@ -100,7 +102,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(createTODOResponse)
 			return
 		}
-	} else if r.Method == "PUT" {
+	case "PUT":
 		var updateTODORequest = &model.UpdateTODORequest{}
 		var updateTODOResponse = &model.UpdateTODOResponse{}
 		json.NewDecoder(r.Body).Decode(updateTODORequest)
@@ -122,7 +124,49 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(updateTODOResponse)
 			return
 		}
+	case "GET":
+		var readTODORequest = &model.ReadTODORequest{}
+		var readTODOResponse = &model.ReadTODOResponse{}
+
+		//fmt.Println(r.URL.Query())
+		getQuery := r.URL.Query()
+		fmt.Println(getQuery)
+		if getQuery.Has("prev_id") {
+			getPrevID, err := strconv.Atoi(getQuery.Get("prev_id"))
+			if err != nil {
+				fmt.Print("prev_id err : ")
+				fmt.Println(err)
+			}
+			readTODORequest.PrevID = int64(getPrevID)
+		} else {
+			readTODORequest.PrevID = 0
+			fmt.Println("ID無いよ")
+		}
+		if getQuery.Has(("size")) {
+			getSize, err := strconv.Atoi(getQuery.Get("size"))
+			if err != nil {
+				fmt.Print("size err : ")
+				fmt.Println(err)
+			}
+			readTODORequest.Size = int64(getSize)
+		} else {
+			readTODORequest.Size = 0
+			fmt.Println("size無いよ")
+		}
+
+		todos, err := h.svc.ReadTODO(r.Context(), readTODORequest.PrevID, readTODORequest.Size)
+		if err != nil {
+			fmt.Print("ReadTODO err : ")
+			fmt.Println(err)
+		}
+
+		readTODOResponse.TODOs = todos
+
+		json.NewEncoder(w).Encode(readTODOResponse)
+
+		return
 	}
+
 	fmt.Println("どこも通ってない！？")
 	return
 
