@@ -164,6 +164,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		}
 		todos = append(todos, addTodo)
 	}
+	fmt.Print(todos)
 
 	return todos, nil
 }
