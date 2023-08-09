@@ -137,11 +137,11 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 		return nil, err
 	}
 
-	// err = &model.ErrNotFound{}
-	// isRow, err := result.RowsAffected()
-	// if isRow == 0 {
-	// 	return nil, err
-	// }
+	error := &model.ErrNotFound{}
+	isRow, err := result.RowsAffected()
+	if isRow == 0 {
+		return nil, error
+	}
 	insertID, err := result.LastInsertId()
 
 	fmt.Print("insert insertID : ")
