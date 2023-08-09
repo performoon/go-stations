@@ -118,18 +118,23 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 	fmt.Println(size)
 	todos := []*model.TODO{}
 
+	var stmt *sql.Stmt
+	var rows *sql.Rows
 	// if size < 5 {
 	// 	size = 5
 	// }
 
 	if prevID == 0 {
-		fmt.Println("複数")
+		fmt.Println("preIDなし")
 		stmt, err := s.db.PrepareContext(ctx, read)
 		if err != nil {
 			fmt.Println("PrepareContext err")
 			return nil, err
 		}
 		defer stmt.Close()
+
+		rows, err := stmt.QueryContext(ctx, size)
+		defer rows.Close()
 
 		// result, err := stmt.ExecContext(ctx, size)
 		// //_, err = stmt.ExecContext(ctx, subject, description)
@@ -138,20 +143,6 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		// 	fmt.Println(err)
 		// 	return nil, err
 		// }
-
-		rows, err := stmt.QueryContext(ctx, size)
-		defer rows.Close()
-
-		count := 0
-		for rows.Next() {
-			addTodo := &model.TODO{}
-			if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
-				fmt.Print("rows err : ")
-				fmt.Println(err)
-			}
-			todos = append(todos, addTodo)
-			count++
-		}
 	} else {
 		fmt.Println("単数")
 		stmt, err := s.db.PrepareContext(ctx, readWithID)
@@ -161,20 +152,19 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		}
 		defer stmt.Close()
 
-		row := stmt.QueryRowContext(ctx, prevID, size)
+		rows, err := stmt.QueryContext(ctx, prevID, size)
+		defer rows.Close()
+	}
 
+	count := 0
+	for rows.Next() {
 		addTodo := &model.TODO{}
-		err = row.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt)
-		if err != nil {
-			fmt.Print("row err : ")
+		if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
+			fmt.Print("rows err : ")
 			fmt.Println(err)
 		}
 		todos = append(todos, addTodo)
-		fmt.Print(todos[0])
-	}
-	for i, printTodo := range todos {
-		fmt.Print("todo : ")
-		fmt.Printf("%d: %s\n", i, printTodo)
+		count++
 	}
 
 	return todos, nil
