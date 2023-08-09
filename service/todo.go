@@ -168,7 +168,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 			fmt.Println(err)
 		}
 		todos = append(todos, addTodo)
-		fmt.Print(todos[0])
+		fmt.Print(todos[1])
 	}
 	fmt.Print(todos)
 
