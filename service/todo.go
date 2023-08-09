@@ -118,8 +118,6 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 	fmt.Println(size)
 	todos := []*model.TODO{}
 
-	var stmt *sql.Stmt
-	var rows *sql.Rows
 	// if size < 5 {
 	// 	size = 5
 	// }
@@ -143,6 +141,17 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		// 	fmt.Println(err)
 		// 	return nil, err
 		// }
+
+		count := 0
+		for rows.Next() {
+			addTodo := &model.TODO{}
+			if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
+				fmt.Print("rows err : ")
+				fmt.Println(err)
+			}
+			todos = append(todos, addTodo)
+			count++
+		}
 	} else {
 		fmt.Println("単数")
 		stmt, err := s.db.PrepareContext(ctx, readWithID)
@@ -154,18 +163,17 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 
 		rows, err := stmt.QueryContext(ctx, prevID, size)
 		defer rows.Close()
-	}
-	defer stmt.Close()
 
-	count := 0
-	for rows.Next() {
-		addTodo := &model.TODO{}
-		if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
-			fmt.Print("rows err : ")
-			fmt.Println(err)
+		count := 0
+		for rows.Next() {
+			addTodo := &model.TODO{}
+			if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
+				fmt.Print("rows err : ")
+				fmt.Println(err)
+			}
+			todos = append(todos, addTodo)
+			count++
 		}
-		todos = append(todos, addTodo)
-		count++
 	}
 
 	return todos, nil
