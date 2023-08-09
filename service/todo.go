@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"reflect"
 
 	"github.com/TechBowl-japan/go-stations/model"
@@ -147,7 +146,8 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		for rows.Next() {
 			addTodo := &model.TODO{}
 			if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
-				log.Fatalf("getRows rows.Scan error err:%v", err)
+				fmt.Print("rows err : ")
+				fmt.Println(err)
 			}
 			todos = append(todos, addTodo)
 			count++
