@@ -129,7 +129,7 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 	}
 	//defer stmt.Close()
 
-	result, err := stmt.ExecContext(ctx, subject, description)
+	result, err := stmt.ExecContext(ctx, subject, description, id)
 	//_, err = stmt.ExecContext(ctx, subject, description)
 	if err != nil {
 		fmt.Print("ExecContext err : ")
@@ -137,10 +137,9 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 		return nil, err
 	}
 
-	error := &model.ErrNotFound{}
 	isRow, err := result.RowsAffected()
 	if isRow == 0 {
-		return nil, error
+		return nil, &model.ErrNotFound{}
 	}
 	insertID, err := result.LastInsertId()
 
