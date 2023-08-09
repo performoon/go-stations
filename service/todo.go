@@ -124,6 +124,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 	// }
 
 	if prevID == 0 {
+		fmt.Println("複数")
 		stmt, err := s.db.PrepareContext(ctx, read)
 		if err != nil {
 			fmt.Println("PrepareContext err")
@@ -152,6 +153,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 			count++
 		}
 	} else {
+		fmt.Println("単数")
 		stmt, err := s.db.PrepareContext(ctx, readWithID)
 		if err != nil {
 			fmt.Println("PrepareContext err")
