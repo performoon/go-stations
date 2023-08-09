@@ -146,7 +146,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		count := 0
 		for rows.Next() {
 			addTodo := &model.TODO{}
-			if err := rows.Scan(addTodo.ID, addTodo.Subject, addTodo.Description, addTodo.CreatedAt, addTodo.UpdatedAt); err != nil {
+			if err := rows.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt); err != nil {
 				log.Fatalf("getRows rows.Scan error err:%v", err)
 			}
 			todos = append(todos, addTodo)
@@ -164,7 +164,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		row := stmt.QueryRowContext(ctx, prevID, size)
 
 		addTodo := &model.TODO{}
-		err = row.Scan(addTodo.ID, addTodo.Subject, addTodo.Description, addTodo.CreatedAt, addTodo.UpdatedAt)
+		err = row.Scan(&addTodo.ID, &addTodo.Subject, &addTodo.Description, &addTodo.CreatedAt, &addTodo.UpdatedAt)
 		if err != nil {
 			fmt.Print("row err : ")
 			fmt.Println(err)
