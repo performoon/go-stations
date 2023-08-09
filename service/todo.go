@@ -124,6 +124,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 			fmt.Println("PrepareContext err")
 			return nil, err
 		}
+		defer stmt.Close()
 
 		// result, err := stmt.ExecContext(ctx, size)
 		// //_, err = stmt.ExecContext(ctx, subject, description)
@@ -134,6 +135,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		// }
 
 		rows, err := stmt.QueryContext(ctx, size)
+		defer rows.Close()
 
 		count := 0
 		for rows.Next() {
@@ -148,6 +150,7 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 			fmt.Println("PrepareContext err")
 			return nil, err
 		}
+		defer stmt.Close()
 
 		row := stmt.QueryRowContext(ctx, prevID, size)
 
