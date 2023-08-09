@@ -150,7 +150,7 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 			readTODORequest.Size = int64(getSize)
 		} else {
-			readTODORequest.Size = 0
+			readTODORequest.Size = 5
 			fmt.Println("size無いよ")
 		}
 
