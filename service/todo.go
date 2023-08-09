@@ -113,6 +113,10 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		readWithID = `SELECT id, subject, description, created_at, updated_at FROM todos WHERE id < ? ORDER BY id DESC LIMIT ?`
 	)
 
+	fmt.Print("prevID : ")
+	fmt.Println(prevID)
+	fmt.Print("size : ")
+	fmt.Println(size)
 	todos := []*model.TODO{}
 
 	// if size < 5 {
