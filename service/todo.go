@@ -129,7 +129,7 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 	}
 	//defer stmt.Close()
 
-	result, err := stmt.ExecContext(ctx, subject, description, id)
+	result, err := stmt.ExecContext(ctx, subject, description)
 	//_, err = stmt.ExecContext(ctx, subject, description)
 	if err != nil {
 		fmt.Print("ExecContext err : ")
