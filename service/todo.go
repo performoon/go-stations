@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 	"reflect"
 
 	"github.com/TechBowl-japan/go-stations/model"
@@ -111,8 +112,53 @@ func (s *TODOService) ReadTODO(ctx context.Context, prevID, size int64) ([]*mode
 		read       = `SELECT id, subject, description, created_at, updated_at FROM todos ORDER BY id DESC LIMIT ?`
 		readWithID = `SELECT id, subject, description, created_at, updated_at FROM todos WHERE id < ? ORDER BY id DESC LIMIT ?`
 	)
+	todos := []*model.TODO{}
 
-	return nil, nil
+	if size < 5 {
+		size = 5
+	}
+
+	if prevID == 0 {
+		stmt, err := s.db.PrepareContext(ctx, read)
+		if err != nil {
+			fmt.Println("PrepareContext err")
+			return nil, err
+		}
+
+		// result, err := stmt.ExecContext(ctx, size)
+		// //_, err = stmt.ExecContext(ctx, subject, description)
+		// if err != nil {
+		// 	fmt.Print("ExecContext err : ")
+		// 	fmt.Println(err)
+		// 	return nil, err
+		// }
+
+		rows, err := stmt.QueryContext(ctx, size)
+
+		count := 0
+		for rows.Next() {
+			if err := rows.Scan(&todos[count].ID, &todos[count].Subject, &todos[count].Description, &todos[count].CreatedAt, &todos[count].UpdatedAt); err != nil {
+				log.Fatalf("getRows rows.Scan error err:%v", err)
+			}
+			count++
+		}
+	} else {
+		stmt, err := s.db.PrepareContext(ctx, readWithID)
+		if err != nil {
+			fmt.Println("PrepareContext err")
+			return nil, err
+		}
+
+		row := stmt.QueryRowContext(ctx, prevID, size)
+
+		err = row.Scan(&todos[0].ID, &todos[0].Subject, &todos[0].Description, &todos[0].CreatedAt, &todos[0].UpdatedAt)
+		if err != nil {
+			fmt.Print("row err : ")
+			fmt.Println(err)
+		}
+	}
+
+	return todos, nil
 }
 
 // UpdateTODO updates the TODO on DB.
