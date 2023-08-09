@@ -201,7 +201,7 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 	//fmt.Println(todo)
 	fmt.Println("finish")
 
-	return nil, nil
+	return todo, nil
 }
 
 // DeleteTODO deletes TODOs on DB by ids.
