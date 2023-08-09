@@ -82,7 +82,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 	fmt.Print("insertID type : ")
 	fmt.Println(reflect.TypeOf(insertID))
 
-	todo.ID = int(insertID)
+	todo.ID = insertID
 
 	//fmt.Println(todo)
 
@@ -122,86 +122,86 @@ func (s *TODOService) UpdateTODO(ctx context.Context, id int64, subject, descrip
 		confirm = `SELECT subject, description, created_at, updated_at FROM todos WHERE id = ?`
 	)
 
-	// stmt, err := s.db.PrepareContext(ctx, update)
-	// if err != nil {
-	// 	fmt.Println("PrepareContext err")
-	// 	return nil, err
-	// }
-	// //defer stmt.Close()
+	stmt, err := s.db.PrepareContext(ctx, update)
+	if err != nil {
+		fmt.Println("PrepareContext err")
+		return nil, err
+	}
+	//defer stmt.Close()
 
-	// result, err := stmt.ExecContext(ctx, subject, description, id)
-	// //_, err = stmt.ExecContext(ctx, subject, description)
+	result, err := stmt.ExecContext(ctx, subject, description, id)
+	//_, err = stmt.ExecContext(ctx, subject, description)
+	if err != nil {
+		fmt.Print("ExecContext err : ")
+		fmt.Println(err)
+		return nil, err
+	}
+
+	isRow, err := result.RowsAffected()
+	if isRow == 0 {
+		return nil, &model.ErrNotFound{}
+	}
+	insertID, err := result.LastInsertId()
+
+	fmt.Print("insert insertID : ")
+	fmt.Println(insertID)
+	fmt.Print("insertID type : ")
+	fmt.Println(reflect.TypeOf(insertID))
+
+	// _, err = stmt.Exec("UPDATE todos SET id = ?", insertID)
 	// if err != nil {
-	// 	fmt.Print("ExecContext err : ")
+	// 	fmt.Print("ExecID err: ")
 	// 	fmt.Println(err)
-	// 	return nil, err
 	// }
 
-	// isRow, err := result.RowsAffected()
-	// if isRow == 0 {
-	// 	return nil, &model.ErrNotFound{}
-	// }
-	// insertID, err := result.LastInsertId()
+	stmt, err = s.db.PrepareContext(ctx, confirm)
+	if err != nil {
+		fmt.Println("PrepareContext err")
+		return nil, err
+	}
+	//defer stmt.Close()
+	fmt.Print("select PrepareContext : ")
+	fmt.Println(stmt)
 
-	// fmt.Print("insert insertID : ")
-	// fmt.Println(insertID)
-	// fmt.Print("insertID type : ")
-	// fmt.Println(reflect.TypeOf(insertID))
-
-	// // _, err = stmt.Exec("UPDATE todos SET id = ?", insertID)
-	// // if err != nil {
-	// // 	fmt.Print("ExecID err: ")
-	// // 	fmt.Println(err)
-	// // }
-
-	// stmt, err = s.db.PrepareContext(ctx, confirm)
-	// if err != nil {
-	// 	fmt.Println("PrepareContext err")
-	// 	return nil, err
-	// }
-	// //defer stmt.Close()
-	// fmt.Print("select PrepareContext : ")
-	// fmt.Println(stmt)
-
-	// _, err = stmt.ExecContext(ctx, insertID)
-	// //_, err = stmt.ExecContext(ctx, subject, description)
-	// if err != nil {
-	// 	fmt.Print("ExecContext err : ")
-	// 	fmt.Println(err)
-	// 	return nil, err
-	// }
-	// fmt.Print("select ExecContext : ")
-	// fmt.Println(result)
+	_, err = stmt.ExecContext(ctx, insertID)
+	//_, err = stmt.ExecContext(ctx, subject, description)
+	if err != nil {
+		fmt.Print("ExecContext err : ")
+		fmt.Println(err)
+		return nil, err
+	}
+	fmt.Print("select ExecContext : ")
+	fmt.Println(result)
 
 	todo := new(model.TODO)
 
-	// fmt.Print("insert insertID : ")
-	// fmt.Println(insertID)
-	// fmt.Print("insertID type : ")
-	// fmt.Println(reflect.TypeOf(insertID))
+	fmt.Print("insert insertID : ")
+	fmt.Println(insertID)
+	fmt.Print("insertID type : ")
+	fmt.Println(reflect.TypeOf(insertID))
 
-	// todo.ID = int(insertID)
+	todo.ID = insertID
 
-	// //fmt.Println(todo)
+	//fmt.Println(todo)
 
-	// row := stmt.QueryRowContext(ctx, insertID)
+	row := stmt.QueryRowContext(ctx, insertID)
 
-	// err = row.Scan(&todo.Subject, &todo.Description, &todo.CreatedAt, &todo.UpdatedAt)
-	// if err != nil {
-	// 	fmt.Print("row err : ")
-	// 	fmt.Println(err)
-	// }
+	err = row.Scan(&todo.Subject, &todo.Description, &todo.CreatedAt, &todo.UpdatedAt)
+	if err != nil {
+		fmt.Print("row err : ")
+		fmt.Println(err)
+	}
 
-	// fmt.Print("todo : ")
-	// fmt.Println(todo)
-	// // row.Scan(todo)
+	fmt.Print("todo : ")
+	fmt.Println(todo)
+	// row.Scan(todo)
 
-	// // s.db.QueryRowContext(ctx, confirm)
+	// s.db.QueryRowContext(ctx, confirm)
 
-	// //fmt.Println(todo)
-	// fmt.Println("finish")
+	//fmt.Println(todo)
+	fmt.Println("finish")
 
-	return todo, nil
+	return nil, nil
 }
 
 // DeleteTODO deletes TODOs on DB by ids.
