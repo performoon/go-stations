@@ -4,6 +4,6 @@ type ErrNotFound struct {
 }
 
 func (e *ErrNotFound) Error() string {
-	errMessage := "errMessage"
+	errMessage := "errMessager"
 	return errMessage
 }
