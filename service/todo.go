@@ -288,7 +288,7 @@ func (s *TODOService) DeleteTODO(ctx context.Context, ids []int64) error {
 	}
 	//defer stmt.Close()
 
-	result, err := stmt.ExecContext(ctx, values)
+	result, err := stmt.ExecContext(ctx, values...)
 	if err != nil {
 		fmt.Print("ExecContext err : ")
 		fmt.Println(err)
