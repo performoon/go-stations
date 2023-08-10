@@ -165,8 +165,27 @@ func (h *TODOHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(readTODOResponse)
 
 		return
-	}
+	case "DELETE":
+		var deleteTODORequest = &model.DeleteTODORequest{}
 
+		json.NewDecoder(r.Body).Decode(deleteTODORequest)
+		if len(deleteTODORequest.IDs) == 0 {
+			w.Header().Set("Content-Type", "application/json") // レスポンスのContent-Typeを設定
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]string{"error": "Bad Request: Invalid input"})
+			return
+		}
+		err := h.svc.DeleteTODO(r.Context(), deleteTODORequest.IDs)
+		if err != nil {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusNotFound) // 404 NotFound の場合のステータスコードを設定
+			json.NewEncoder(w).Encode(map[string]string{"error": "Internal Server Error"})
+			return
+		}
+		var deleteTODOResponse = &model.DeleteTODOResponse{}
+		json.NewEncoder(w).Encode(deleteTODOResponse)
+		return
+	}
 	fmt.Println("どこも通ってない！？")
 	return
 
