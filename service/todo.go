@@ -276,6 +276,11 @@ func (s *TODOService) DeleteTODO(ctx context.Context, ids []int64) error {
 	symbols := strings.Repeat(", ?", len(ids)-1)
 	delete := fmt.Sprintf("DELETE FROM todos WHERE id IN (?%s)", symbols)
 
+	values := make([]interface{}, len(ids))
+	for i, id := range ids {
+		values[i] = id
+	}
+
 	stmt, err := s.db.PrepareContext(ctx, delete)
 	if err != nil {
 		fmt.Println("PrepareContext err")
@@ -283,7 +288,7 @@ func (s *TODOService) DeleteTODO(ctx context.Context, ids []int64) error {
 	}
 	//defer stmt.Close()
 
-	result, err := stmt.ExecContext(ctx)
+	result, err := stmt.ExecContext(ctx, values)
 	if err != nil {
 		fmt.Print("ExecContext err : ")
 		fmt.Println(err)
